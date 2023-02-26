@@ -7,13 +7,15 @@
 
         <variable
             name="asteroid"
-            type="ci.orange.nasaimageapp.Asteroid" />
+            type="ci.orange.nasaimageapp.data.Asteroid" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_background">
+        android:background="@color/app_background"
+
+        >
 
         <ImageView
             android:id="@+id/activity_main_image_of_the_day"

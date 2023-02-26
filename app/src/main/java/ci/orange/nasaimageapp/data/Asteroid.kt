@@ -1,4 +1,4 @@
-package ci.orange.nasaimageapp
+package ci.orange.nasaimageapp.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

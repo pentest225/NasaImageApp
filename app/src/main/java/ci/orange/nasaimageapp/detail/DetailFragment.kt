@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.detail
+package ci.orange.nasaimageapp.detail
 
 
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import ci.orange.nasaimageapp.Asteroid
+import androidx.navigation.fragment.navArgs
 import ci.orange.nasaimageapp.R
 import ci.orange.nasaimageapp.databinding.FragmentDetailBinding
 
@@ -19,9 +19,9 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-//        val asteroid = DetailFragmentArgs.fromBundle(arguments).selectedAsteroid
-        val args by com.udacity.asteroidradar.detail.DetailFragmentArgs
-            val asteroid =
+        val args : DetailFragmentArgs by navArgs()
+        val asteroid = args.asteroid
+
         binding.asteroid = asteroid
 
         binding.helpButton.setOnClickListener {

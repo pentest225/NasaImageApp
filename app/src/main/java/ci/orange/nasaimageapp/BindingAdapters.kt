@@ -1,9 +1,9 @@
-package com.udacity.asteroidradar
+package ci.orange.nasaimageapp
 
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import ci.orange.nasaimageapp.R
+
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {

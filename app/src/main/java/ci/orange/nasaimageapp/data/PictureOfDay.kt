@@ -1,4 +1,4 @@
-package ci.orange.nasaimageapp
+package ci.orange.nasaimageapp.data
 
 import com.squareup.moshi.Json
 

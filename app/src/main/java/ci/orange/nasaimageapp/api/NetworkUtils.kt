@@ -1,8 +1,8 @@
-package com.udacity.asteroidradar.api
+package ci.orange.nasaimageapp.api
 
+import ci.orange.nasaimageapp.data.Asteroid
+import ci.orange.nasaimageapp.Constants
 
-import ci.orange.nasaimageapp.Asteroid
-import com.udacity.asteroidradar.Constants
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
