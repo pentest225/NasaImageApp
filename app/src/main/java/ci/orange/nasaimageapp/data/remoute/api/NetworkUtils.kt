@@ -1,7 +1,10 @@
-package ci.orange.nasaimageapp.api
+package ci.orange.nasaimageapp.data.remoute.api
 
+import android.os.Build
+import android.os.Build.VERSION
 import ci.orange.nasaimageapp.data.Asteroid
 import ci.orange.nasaimageapp.Constants
+import ci.orange.nasaimageapp.detail.DetailFragmentArgs.Builder
 
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -45,13 +48,15 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     return asteroidList
 }
 
-private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
+fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
     for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
+
         val currentTime = calendar.time
-        val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        val dateFormat =
+            SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         formattedDateList.add(dateFormat.format(currentTime))
         calendar.add(Calendar.DAY_OF_YEAR, 1)
     }
