@@ -5,7 +5,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="ci.orange.nasaimageapp.main.MainFragment"
+        android:name="ci.orange.nasaimageapp.presentation.main.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"
@@ -13,10 +13,10 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="ci.orange.nasaimageapp.detail.DetailFragment"
+        android:name="ci.orange.nasaimageapp.presentation.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
             android:name="asteroid"
-            app:argType="ci.orange.nasaimageapp.data.Asteroid" />
+            app:argType="ci.orange.nasaimageapp.domain.model.Asteroid" />
     </fragment>
 </navigation>

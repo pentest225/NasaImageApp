@@ -3,6 +3,8 @@ package ci.orange.nasaimageapp
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import ci.orange.nasaimageapp.domain.model.ImageOfToday
+import com.bumptech.glide.Glide
 
 
 @BindingAdapter("statusIcon")
@@ -22,6 +24,20 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
         imageView.setImageResource(R.drawable.asteroid_safe)
     }
 }
+
+@BindingAdapter("asteroidImage")
+fun bindImageUrl(imageView: ImageView, today: ImageOfToday?) {
+    if(today != null && today.mediaType != "video"){
+        Glide.with(imageView)
+            .load(today.url)
+            .placeholder(R.drawable.placeholder_picture_of_day)
+            .into(imageView)
+    }else{
+        //todo :Implement movie reader ...
+        imageView.setImageResource(R.drawable.placeholder_picture_of_day)
+    }
+}
+
 
 @BindingAdapter("astronomicalUnitText")
 fun bindTextViewToAstronomicalUnit(textView: TextView, number: Double) {

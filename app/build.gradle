@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "ci.orange.nasaimageapp"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -58,8 +58,11 @@ dependencies {
 
 
     //MOSHI CONVERTER
-    implementation "com.squareup.moshi:moshi:1.13.0"
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
+//    implementation "com.squareup.moshi:moshi:1.13.0"
+//    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
+
+    def  version = "2.9.0"
+    implementation "com.squareup.retrofit2:converter-moshi:$version"
 
     //RETROFIT
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
@@ -90,6 +93,12 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
 
 //    implementation "android.arch.work:work-runtime-ktx:1.0.1"
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+
+    implementation 'com.github.bumptech.glide:glide:4.15.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+
+//    implementation "io.coil-kt:coil:2.3.0"
 //
 //    testImplementation 'junit:junit:4.13.2'
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.5'

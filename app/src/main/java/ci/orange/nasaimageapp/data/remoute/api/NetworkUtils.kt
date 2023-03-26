@@ -1,10 +1,8 @@
 package ci.orange.nasaimageapp.data.remoute.api
 
-import android.os.Build
-import android.os.Build.VERSION
-import ci.orange.nasaimageapp.data.Asteroid
-import ci.orange.nasaimageapp.Constants
-import ci.orange.nasaimageapp.detail.DetailFragmentArgs.Builder
+
+import ci.orange.nasaimageapp.domain.model.Asteroid
+import ci.orange.nasaimageapp.utils.Constants
 
 import org.json.JSONObject
 import java.text.SimpleDateFormat

@@ -1,4 +1,4 @@
-package ci.orange.nasaimageapp.detail
+package ci.orange.nasaimageapp.presentation.detail
 
 
 import android.os.Bundle

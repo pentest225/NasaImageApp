@@ -1,13 +1,14 @@
-package ci.orange.nasaimageapp.adapter
+package ci.orange.nasaimageapp.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ci.orange.nasaimageapp.data.Asteroid
+import ci.orange.nasaimageapp.domain.model.Asteroid
 import ci.orange.nasaimageapp.databinding.ItemAsteroidBinding
 
 
-class AsteroidAdapter(private val dataList:List<Asteroid>,val onSelect:(data:Asteroid)->Unit):RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
+
+class AsteroidAdapter(private val dataList:List<Asteroid>, val onSelect:(data:Asteroid)->Unit):RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
 
     inner class AsteroidViewHolder(val binding: ItemAsteroidBinding):RecyclerView.ViewHolder(binding.root)
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ci.orange.nasaimageapp.main.MainViewModel" />
+            type="ci.orange.nasaimageapp.presentation.main.MainViewModel" />
 
     </data>
 
@@ -29,7 +29,9 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/placeholder_picture_of_day"/>
+                asteroidImage="@{viewModel.toDaysImage}"
+                android:contentDescription="@{viewModel.toDaysImage.explanation}"
+                tools:srcCompat="@drawable/placeholder_picture_of_day"/>
 
             <TextView
                 android:id="@+id/textView"
