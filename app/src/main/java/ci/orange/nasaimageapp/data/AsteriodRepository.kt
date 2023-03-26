@@ -4,9 +4,12 @@ import android.content.Context
 
 
 import android.util.Log
+import ci.orange.nasaimageapp.data.local.AsteroidEntity
 import ci.orange.nasaimageapp.data.local.getInstance
 import ci.orange.nasaimageapp.data.remoute.RetrofitApi
+import ci.orange.nasaimageapp.data.remoute.api.generateTheNextWeekDate
 import ci.orange.nasaimageapp.data.remoute.api.getNextSevenDaysFormattedDates
+//import ci.orange.nasaimageapp.data.remoute.api.getNextWeekDate
 import ci.orange.nasaimageapp.data.remoute.api.parseAsteroidsJsonResult
 import ci.orange.nasaimageapp.data.remoute.dto.toImageOfToDay
 import ci.orange.nasaimageapp.domain.AsteroidRepository
@@ -27,13 +30,39 @@ private const val TAG = "AsteroidRepository"
 class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
     private val dao = getInstance(context).asteroidDao
 
+    override suspend fun getNexWeekAsteroid(): Result<List<Asteroid>> {
+        //Step 1: Check if is Not Already save
+        val dateList = generateTheNextWeekDate()
+        Log.i(TAG, "getNexWeekAsteroid: DateList $dateList")
+        if(dao.getImagesByDate(dateList.last()).isEmpty()){
+            //Step 2: Fetch and save if it is not already saved
+            val response = this.getGetAsteroidByDate(dateList.first(),dateList.last())
+            return if(response.isSuccess) {
+                //When Fetching done reLaunch our function
+                getNexWeekAsteroid()
+            }else{
+                Result.failure(MyException("Error to load new Data"))
+            }
+
+        }else{
+            //Step 3: Return the saved list
+            val asteroidEntityList = mutableListOf<AsteroidEntity>()
+
+            for(date in dateList){
+                asteroidEntityList.addAll(dao.getImagesByDate(date))
+            }
+            val resultList = asteroidEntityList.map { it.toAsteroid() }
+            return Result.success(resultList)
+        }
+
+
+    }
 
     override suspend fun getGetAsteroidByDate(
         startData: String,
         endDate: String
     ): Result<List<Asteroid>> {
         try {
-
             val response = RetrofitApi.nasaApi.getAsteroidData(startData,endDate)
             return if(response.isSuccessful && response.body() != null){
                 val responseBody = response.body()!!
@@ -51,6 +80,8 @@ class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
             return Result.failure(e)
         }
     }
+
+
 
     override suspend fun getGetAsteroidOfWeek(): Result<List<Asteroid>> {
         //The final result
@@ -86,6 +117,7 @@ class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
         return try {
             val dateFormat = DateTimeFormatter.ofPattern(Constants.API_QUERY_DATE_FORMAT)
             val today = LocalDate.now().format(dateFormat)
+
             Log.i(TAG, "getAsteroidOfToday: Current Date $today")
             val todayList = dao.getImagesByDate(today)
             if(todayList.isEmpty()){
@@ -125,7 +157,9 @@ class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
 
     override suspend fun getAllSavedAsteroid(): Result<List<Asteroid>> {
         return try {
-            val savedList = dao.getAllSavedAsteroid()
+            val dateFormat = DateTimeFormatter.ofPattern(Constants.API_QUERY_DATE_FORMAT)
+            val today = LocalDate.now().format(dateFormat)
+            val savedList = dao.getAllSavedAsteroidByStartDate(today)
             val asteroidList = savedList.map { it.toAsteroid() }
             return Result.success(asteroidList)
         }catch (e:java.lang.Exception){

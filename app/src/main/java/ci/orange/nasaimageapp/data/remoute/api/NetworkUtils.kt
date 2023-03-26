@@ -1,6 +1,7 @@
 package ci.orange.nasaimageapp.data.remoute.api
 
 
+import android.util.Log
 import ci.orange.nasaimageapp.domain.model.Asteroid
 import ci.orange.nasaimageapp.utils.Constants
 
@@ -60,4 +61,21 @@ fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     }
 
     return formattedDateList
+}
+fun generateTheNextWeekDate():ArrayList<String>{
+    //TODO : I don't know how to use the Calendar Class but i try ;)
+    val formattedDateList = ArrayList<String>()
+    val dateFormat =
+        SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+    val calendar = Calendar.getInstance()
+    val today = calendar.time
+    calendar.time = today
+    calendar.add(Calendar.DATE,1)
+    for(i in 0..6){
+        val currentTime = calendar.time
+        formattedDateList.add(dateFormat.format(currentTime))
+        calendar.add(Calendar.DATE,1)
+    }
+   return formattedDateList
+
 }

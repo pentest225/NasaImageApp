@@ -63,8 +63,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
+
+
     private fun getTodayAsteroid(){
         CoroutineScope(Dispatchers.IO).launch {
+            //Clear old list
+            _asteroidList.postValue(listOf())
             _loader.postValue(true)
             val result = repository.getAsteroidOfToday()
             result.onSuccess {
@@ -80,6 +85,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getAllSavedAsteroid(){
         CoroutineScope(Dispatchers.IO).launch {
+            //Clear old list
+            _asteroidList.postValue(listOf())
             val response = repository.getAllSavedAsteroid()
             response.onSuccess {
                 _asteroidList.postValue(it)
@@ -90,13 +97,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     fun showWeekAsteroid() {
-        this.getAsteroidData()
+        CoroutineScope(Dispatchers.IO).launch {
+            //Clear old list
+            _asteroidList.postValue(listOf())
+            val response = repository.getNexWeekAsteroid()
+            response.onSuccess {
+                _asteroidList.postValue(it)
+            }
+            response.onFailure {
+                Log.e(TAG, "showWeekAsteroid: Error to get Next Week Asteroid", )
+            }
+        }
     }
 
     fun showToDayAsteroid() {
         this.getTodayAsteroid()
     }
     fun showAllSavedAsteroid(){
+
         this.getAllSavedAsteroid()
     }
 
