@@ -13,4 +13,7 @@ interface AsteroidDao {
     @Query("SELECT * FROM AsteroidEntity where closeApproachDate=:date")
     fun getImagesByDate(date:String):List<AsteroidEntity>
 
+    @Query("SELECT * FROM AsteroidEntity")
+    fun getAllSavedAsteroid():List<AsteroidEntity>
+
 }

@@ -11,6 +11,7 @@ import ci.orange.nasaimageapp.domain.model.Asteroid
 import ci.orange.nasaimageapp.domain.model.ImageOfToday
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -18,8 +19,8 @@ import kotlinx.coroutines.launch
 private const val TAG = "MainViewModel"
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AsteroidRepositoryImpl(application)
-    private val _imagesOfWeek : MutableLiveData<List<Asteroid>> = MutableLiveData(listOf())
-    val imagesOfWeek : LiveData<List<Asteroid>> = _imagesOfWeek
+    private val _asteroidList : MutableLiveData<List<Asteroid>> = MutableLiveData(listOf())
+    val imagesOfWeek : LiveData<List<Asteroid>> = _asteroidList
     private val _toDaysImage : MutableLiveData<ImageOfToday> = MutableLiveData()
     val toDaysImage :LiveData<ImageOfToday> = _toDaysImage
     private val _loader :MutableLiveData<Boolean> = MutableLiveData(false)
@@ -30,7 +31,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         getToDayImage()
-        getTodayAsteroid()
+        getAsteroidData()
     }
 
     private fun getToDayImage() {
@@ -50,10 +51,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun getAsteroidData(){
         CoroutineScope(Dispatchers.IO).launch {
             _loader.postValue(true)
-            val date = getNextSevenDaysFormattedDates()
-            val result = repository.getGetAsteroidByDate(date.first(),date.last())
+            val result = repository.getGetAsteroidOfWeek()
             result.onSuccess {
-                _imagesOfWeek.postValue(it)
+                _asteroidList.postValue(it)
             }
             result.onFailure {
                 //TODO SHOW ERROR
@@ -66,10 +66,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun getTodayAsteroid(){
         CoroutineScope(Dispatchers.IO).launch {
             _loader.postValue(true)
-
             val result = repository.getAsteroidOfToday()
             result.onSuccess {
-                _imagesOfWeek.postValue(it)
+                _asteroidList.postValue(it)
             }
             result.onFailure {
                 //TODO SHOW ERROR
@@ -77,6 +76,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             _loader.postValue(false)
         }
+    }
+
+    private fun getAllSavedAsteroid(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getAllSavedAsteroid()
+            response.onSuccess {
+                _asteroidList.postValue(it)
+            }
+            response.onFailure {
+                Log.e(TAG, "getAllSavedAsteroid: Error to get all saved asteroid", )
+            }
+        }
+    }
+    fun showWeekAsteroid() {
+        this.getAsteroidData()
+    }
+
+    fun showToDayAsteroid() {
+        this.getTodayAsteroid()
+    }
+    fun showAllSavedAsteroid(){
+        this.getAllSavedAsteroid()
     }
 
 

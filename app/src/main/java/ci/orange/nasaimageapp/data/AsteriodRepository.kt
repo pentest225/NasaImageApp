@@ -52,6 +52,36 @@ class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
         }
     }
 
+    override suspend fun getGetAsteroidOfWeek(): Result<List<Asteroid>> {
+        //The final result
+        val asteroidList :MutableList<Asteroid> = mutableListOf()
+        //Step 1: get the week days list
+        val dateList = getNextSevenDaysFormattedDates()
+        //Step 2: Check in Room DB if data is saved
+        for(date in dateList){
+            val asteroidByDateEntity = dao.getImagesByDate(date)
+            //Step 2: If Data is not saved
+            if(asteroidByDateEntity.isEmpty()){
+                //Download and save in the local DataBase
+                val response = this.getGetAsteroidByDate(dateList.first(),dateList.last())
+                //And Try again
+                if(response.isSuccess){
+                    getGetAsteroidOfWeek()
+                }else{
+                    //When download error
+                    return Result.failure(MyException("Error to load new Data"))
+                }
+                //Out of the loop
+                break
+            }else{
+                //Step 3: Convert geted data and return it
+                val asteroid = asteroidByDateEntity.map { it.toAsteroid() }
+                asteroidList.addAll(asteroid)
+            }
+        }
+        return Result.success(asteroidList)
+    }
+
     override suspend fun getAsteroidOfToday(): Result<List<Asteroid>> {
         return try {
             val dateFormat = DateTimeFormatter.ofPattern(Constants.API_QUERY_DATE_FORMAT)
@@ -89,6 +119,16 @@ class AsteroidRepositoryImpl(private val context :Context) :AsteroidRepository{
             }
         }catch (e:java.lang.Exception){
 
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getAllSavedAsteroid(): Result<List<Asteroid>> {
+        return try {
+            val savedList = dao.getAllSavedAsteroid()
+            val asteroidList = savedList.map { it.toAsteroid() }
+            return Result.success(asteroidList)
+        }catch (e:java.lang.Exception){
             Result.failure(e)
         }
     }

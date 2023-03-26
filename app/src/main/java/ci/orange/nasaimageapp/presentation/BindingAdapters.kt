@@ -11,8 +11,11 @@ import com.bumptech.glide.Glide
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
+
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -20,8 +23,10 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -32,9 +37,16 @@ fun bindImageUrl(imageView: ImageView, today: ImageOfToday?) {
             .load(today.url)
             .placeholder(R.drawable.placeholder_picture_of_day)
             .into(imageView)
-    }else{
+        imageView.contentDescription = imageView.context.getString(R.string.nasa_picture_of_day_content_description_format,today.title)
+
+    }else if(today != null ){
         //todo :Implement movie reader ...
-        imageView.setImageResource(R.drawable.placeholder_picture_of_day)
+        imageView.setImageResource(R.drawable.video_player)
+        imageView.contentDescription = imageView.context.getString(R.string.nasa_picture_of_day_content_description_format,today.title)
+
+    }else{
+        imageView.setImageResource(R.drawable.computer)
+        imageView.contentDescription = imageView.context.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
     }
 }
 

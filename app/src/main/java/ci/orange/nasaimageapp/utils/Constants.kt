@@ -1,7 +1,10 @@
 package ci.orange.nasaimageapp.utils
+
+import ci.orange.nasaimageapp.BuildConfig
+
 object Constants {
     const val API_QUERY_DATE_FORMAT = "YYYY-MM-dd"
     const val DEFAULT_END_DATE_DAYS = 7
     const val BASE_URL = "https://api.nasa.gov/"
-    const val API_KEY = "BkzEaJDOMLyIqDGc8ZIvIoPelM8Pnrj7ov5unfky"
+    const val API_KEY = BuildConfig.API_KEY
 }

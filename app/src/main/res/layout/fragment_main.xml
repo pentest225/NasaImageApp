@@ -30,7 +30,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 asteroidImage="@{viewModel.toDaysImage}"
-                android:contentDescription="@{viewModel.toDaysImage.explanation}"
+                android:contentDescription="@{viewModel.toDaysImage.title}"
                 tools:srcCompat="@drawable/placeholder_picture_of_day"/>
 
             <TextView
